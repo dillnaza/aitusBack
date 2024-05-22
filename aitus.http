@@ -1,0 +1,6 @@
+@aitus_HostAddress = http://localhost:5032
+
+GET {{aitus_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
