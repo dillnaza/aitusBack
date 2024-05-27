@@ -1,9 +1,10 @@
 ﻿using aitus.Interfaces;
 using aitus.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace aitus.Repositories
 {
-    public class GroupRepository : IGroupReposotiry
+    public class GroupRepository : IGroupRepository
     {
         private readonly DataContext _context;
 
@@ -11,19 +12,42 @@ namespace aitus.Repositories
         {
             _context = context;
         }
+
+        public Group GetGroup(int Id)
+        {
+            return _context.Groups.Where(g => g.GroupId == Id).FirstOrDefault();
+        }
+
         public ICollection<Group> GetGroups()
         {
-            return _context.Groups.OrderBy(s => s.GroupId).ToList();
+            return _context.Groups.OrderBy(g => g.GroupId).ToList();
         }
-        public bool GroupExists(int Id)
-        {
-            return _context.Groups.Any(s => s.GroupId == Id);
-        }
+
         public ICollection<Student> GetGroupStudents(int GroupId)
         {
-            var student = _context.Students.Where(s => s.GroupId == GroupId);
+            var student = _context.Students.Where(g => g.GroupId == GroupId);
             return student.OrderBy(s => s.StudentId).ToList();
         }
 
+        public bool GroupExists(int Id)
+        {
+            return _context.Groups.Any(g => g.GroupId == Id);
+        }
+
+        public IEnumerable<GroupSubject> GetGroupSubjects(int groupId)
+        {
+            return _context.GroupSubjects
+                           .Where(gs => gs.GroupId == groupId)
+                           .Include(gs => gs.Subject)
+                           .ToList();
+        }
+
+        public IEnumerable<GroupTeacher> GetGroupTeachers(int groupId)
+        {
+            return _context.GroupTeachers
+                           .Where(gt => gt.GroupId == groupId)
+                           .Include(gt => gt.Teacher)
+                           .ToList();
+        }
     }
 }

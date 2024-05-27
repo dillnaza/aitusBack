@@ -26,7 +26,7 @@ namespace aitus.Models
 
         public Group Group { get; set; }
 
-        public ICollection<AttendanceStudent> AttendanceStudents { get; set; } = new List<AttendanceStudent>();
+        public ICollection<AttendanceStudent> AttendanceStudents { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;

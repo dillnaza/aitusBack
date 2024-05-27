@@ -8,8 +8,11 @@ namespace aitus.Helper
     {
         public MappingProfiles()
         {
-            CreateMap<Student, StudentDto>();
+            CreateMap<Attendance, AttendanceDto>();
             CreateMap<Group, GroupDto>();
+            CreateMap<Teacher, TeacherDto>();
+            CreateMap<Student, StudentDto>();
+            CreateMap<Subject, SubjectDto>();
         }
     }
 }

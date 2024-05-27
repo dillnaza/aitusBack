@@ -1,7 +1,6 @@
 ﻿using aitus.Dto;
 using aitus.Interfaces;
 using aitus.Models;
-using aituss.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +10,10 @@ namespace aitus.Controllers
     [ApiController]
     public class GroupController : Controller
     {
-        private readonly IGroupReposotiry _groupRepository;
+        private readonly IGroupRepository _groupRepository;
         private readonly IMapper _mapper;
 
-        public GroupController(IGroupReposotiry groupRepository, IMapper mapper)
+        public GroupController(IGroupRepository groupRepository, IMapper mapper)
         {
             _groupRepository = groupRepository;
             _mapper = mapper;
@@ -26,9 +25,7 @@ namespace aitus.Controllers
         {
             var groups = _mapper.Map<List<GroupDto>>(_groupRepository.GetGroups());
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
             return Ok(groups);
         }
 

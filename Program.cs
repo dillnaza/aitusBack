@@ -1,6 +1,7 @@
 using aitus.Data;
 using aitus.Interfaces;
 using aitus.Repositories;
+using aitus.Repository;
 using aituss.Interfaces;
 using aituss.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -11,14 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddTransient<Seed>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-builder.Services.AddScoped<IGroupReposotiry, GroupRepository>();
+builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
