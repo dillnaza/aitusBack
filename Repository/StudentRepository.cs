@@ -1,5 +1,6 @@
 ﻿using aituss.Interfaces;
 using aitus.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace aituss.Repository
 {
@@ -49,6 +50,12 @@ namespace aituss.Repository
         public bool StudentExists(int Id)
         {
             return _context.Students.Any(s => s.StudentId == Id);
+        }
+
+        public async Task<Student> GetStudentByEmailAndPasswordAsync(string email, string password)
+        {
+            // Найти студента по электронной почте и паролю
+            return await _context.Students.FirstOrDefaultAsync(s => s.Email == email && s.Password == password);
         }
     }
 }

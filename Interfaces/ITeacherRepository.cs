@@ -8,5 +8,6 @@ namespace aitus.Interfaces
         Teacher GetTeacher(int Id);
         bool TeacherExists(int Id);
         public bool TeachesSubject(int teacherId, int subjectId);
+        Task<Teacher> GetTeacherByEmailAndPasswordAsync(string email, string password);
     }
 }

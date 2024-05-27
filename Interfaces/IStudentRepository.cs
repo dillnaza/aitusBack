@@ -11,5 +11,6 @@ namespace aituss.Interfaces
         Student GetStudentByName(string Name);
         int GetStudentBarcode(string Email);
         bool StudentExists(int Id);
+        Task<Student> GetStudentByEmailAndPasswordAsync(string email, string password);
     }
 }
