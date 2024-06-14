@@ -1,66 +1,72 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using aitus.Dto;
 using aitus.Interfaces;
-using aitus.Models;
-using AutoMapper;
-using System.Linq;
-using System.Collections.Generic;
-using aitus.Dto;
 using aituss.Interfaces;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace aitus.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentAttendanceController : ControllerBase
+    public class StudentMainController : ControllerBase
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IGroupRepository _groupRepository;
         private readonly ISubjectRepository _subjectRepository;
         private readonly ITeacherRepository _teacherRepository;
-        private readonly IAttendanceRepository _attendanceRepository;
         private readonly IMapper _mapper;
 
-        public StudentAttendanceController(
+        public StudentMainController(
             IStudentRepository studentRepository,
             IGroupRepository groupRepository,
             ISubjectRepository subjectRepository,
             ITeacherRepository teacherRepository,
-            IAttendanceRepository attendanceRepository,
             IMapper mapper)
         {
             _studentRepository = studentRepository;
             _groupRepository = groupRepository;
             _subjectRepository = subjectRepository;
             _teacherRepository = teacherRepository;
-            _attendanceRepository = attendanceRepository;
             _mapper = mapper;
         }
 
-        [HttpGet("student/{studentId}/subject/{subjectId}")]
-        public IActionResult GetStudentAttendance(int studentId, int subjectId)
+        [HttpGet("{studentId}")]
+        [ProducesResponseType(200, Type = typeof(StudentSubjectDto))]
+        [ProducesResponseType(400)]
+        public IActionResult GetStudentSubjects(int studentId)
         {
             if (!_studentRepository.StudentExists(studentId))
-                return NotFound($"Student with ID {studentId} not found.");
-            if (!_subjectRepository.SubjectExists(subjectId))
-                return NotFound($"Subject with ID {subjectId} not found.");
+                return NotFound();
             var student = _studentRepository.GetStudent(studentId);
             var group = _groupRepository.GetGroup(student.GroupId);
-            var subject = _subjectRepository.GetSubject(subjectId);
-            var subjectTeacher = _teacherRepository.GetTeacherNameBySubjectAndGroup(subjectId, group.GroupId);
+            var groupSubjects = _groupRepository.GetGroupSubjects(student.GroupId);
+            var subjectTeacher = new List<SubjectTeacherDto>();
+            foreach (var groupSubject in groupSubjects)
+            {
+                var subject = _subjectRepository.GetSubject(groupSubject.SubjectId);
+                var groupTeachers = _groupRepository.GetGroupTeachers(student.GroupId);
+                foreach (var groupTeacher in groupTeachers)
+                {
+                    var teacher = _teacherRepository.GetTeacher(groupTeacher.TeacherId);
+                    if (_teacherRepository.TeachesSubject(teacher.TeacherId, subject.SubjectId))
+                    {
+                        subjectTeacher.Add(new SubjectTeacherDto
+                        {
+                            SubjectName = subject.SubjectName,
+                            TeacherName = $"{teacher.Name} {teacher.Surname}"
+                        });
+                    }
+                }
+            }
             var studentBarcode = _studentRepository.GetStudentBarcode(student.Email);
-            var attendances = _attendanceRepository.GetAttendancesByStudentIdAndSubject(studentId, subjectId);
-            var attendancePercent = _attendanceRepository.GetAttendancePercent(studentId, subjectId);
-            var studentAttendanceDto = new StudentAttendanceDto
+            var studentAttendanceDto = new StudentSubjectDto
             {
                 StudentBarcode = studentBarcode,
                 StudentName = student.Name,
                 StudentSurname = student.Surname,
                 GroupName = group.GroupName,
-                TeacherName = subjectTeacher.Name,
-                TeacherSurname = subjectTeacher.Surname,
-                SubjectName = subject.SubjectName,
-                AttendancePercent = attendancePercent,
-                Attendances = _mapper.Map<List<AttendanceDto>>(attendances)
+                SubjectTeacher = subjectTeacher
             };
             return Ok(studentAttendanceDto);
         }

@@ -4,8 +4,8 @@ namespace aitus.Interfaces
 {
     public interface ISubjectRepository
     {
-        ICollection<Subject> GetSubjects();
         Subject GetSubject(int Id);
+        ICollection<Subject> GetSubjects();
         bool SubjectExists(int Id);
     }
 }

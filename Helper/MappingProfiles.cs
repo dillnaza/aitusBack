@@ -13,6 +13,9 @@ namespace aitus.Helper
             CreateMap<Teacher, TeacherDto>();
             CreateMap<Student, StudentDto>();
             CreateMap<Subject, SubjectDto>();
+            CreateMap<Attendance, StudentAttendanceDto>();
+            CreateMap<Student, StudentSubjectDto>();
+            CreateMap<Teacher, TeacherSubjectDto>();
         }
     }
 }

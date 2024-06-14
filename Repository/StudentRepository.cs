@@ -23,27 +23,12 @@ namespace aituss.Repository
             return _context.Students.Where(s => s.StudentId == Id).FirstOrDefault();
         }
 
-        public Student GetStudentByBarcode(int Barcode)
-        {
-            return _context.Students.Where(s => s.StudentId == Barcode).FirstOrDefault();
-        }
-
-        public Student GetStudentBySurname(string Surname)
-        {
-            return _context.Students.Where(s => s.Surname == Surname).FirstOrDefault();
-        }
-
-        public Student GetStudentByName(string Name)
-        {
-            return _context.Students.Where(s => s.Name == Name).FirstOrDefault();
-        }
-
         public int GetStudentBarcode(string Email)
         {
             var student = _context.Students.FirstOrDefault(s => s.Email == Email);
             if (student == null) return 0;
-            string barcode = student.Email.Substring(0, 6);
-            int.TryParse(barcode, out int result);
+            string barcode = student.Email[..6];
+            _ = int.TryParse(barcode, out int result);
             return result;
         }
 
@@ -54,7 +39,6 @@ namespace aituss.Repository
 
         public async Task<Student> GetStudentByEmailAndPasswordAsync(string email, string password)
         {
-            // Найти студента по электронной почте и паролю
             return await _context.Students.FirstOrDefaultAsync(s => s.Email == email && s.Password == password);
         }
     }

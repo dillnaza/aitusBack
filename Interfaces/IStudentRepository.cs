@@ -6,9 +6,6 @@ namespace aituss.Interfaces
     {
         ICollection<Student> GetStudents();
         Student GetStudent(int Id);
-        Student GetStudentByBarcode(int Barcode);
-        Student GetStudentBySurname(string Surname);
-        Student GetStudentByName(string Name);
         int GetStudentBarcode(string Email);
         bool StudentExists(int Id);
         Task<Student> GetStudentByEmailAndPasswordAsync(string email, string password);

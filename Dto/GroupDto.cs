@@ -1,10 +1,7 @@
-﻿using aitus.Models;
-
-namespace aitus.Dto
+﻿namespace aitus.Dto
 {
     public class GroupDto
     {
-        public int GroupId { get; set; }
-        public string GroupName { get; set; } = string.Empty;
+        public string GroupName { get; set; }
     }
 }

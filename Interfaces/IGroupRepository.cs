@@ -4,10 +4,10 @@ namespace aitus.Interfaces
 {
     public interface IGroupRepository
     {
-        ICollection<Group> GetGroups();
         Group GetGroup(int Id);
-        ICollection<Student> GetGroupStudents(int GroupId);
+        ICollection<Group> GetGroups();
         bool GroupExists(int Id);
+        ICollection<Student> GetGroupStudents(int GroupId);
         IEnumerable<GroupSubject> GetGroupSubjects(int groupId);
         IEnumerable<GroupTeacher> GetGroupTeachers(int groupId);
     }

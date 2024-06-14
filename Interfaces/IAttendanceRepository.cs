@@ -8,7 +8,8 @@ namespace aitus.Interfaces
         Attendance GetAttendance(int Id);
         ICollection<Attendance> GetAttendances();
         bool AttendanceExist(int Id);
-        double GetAttendancePercent(int studentId);
-        ICollection<string> GetStudentAttendanceStatuses(int studentId);
+        double GetAttendancePercent(int studentId, int subjectId);
+        public ICollection<Attendance> GetAttendancesByStudentIdAndSubject(int studentId, int subjectId);
+
     }
 }

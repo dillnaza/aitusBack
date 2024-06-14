@@ -29,17 +29,30 @@ namespace aitus.Controllers
             return Ok(groups);
         }
 
+        [HttpGet("{groupId}")]
+        [ProducesResponseType(200, Type = typeof(Group))]
+        [ProducesResponseType(400)]
+        public IActionResult GetGroup(int groupId)
+        {
+            if (!_groupRepository.GroupExists(groupId))
+                return NotFound();
+            var group = _mapper.Map<GroupDto>(_groupRepository.GetGroup(groupId));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(group);
+        }
+
         [HttpGet("{groupId}/students")]
-        [ProducesResponseType(200, Type = typeof(Student))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<StudentDto>))]
         [ProducesResponseType(400)]
         public IActionResult GetGroupStudents(int groupId)
         {
             if (!_groupRepository.GroupExists(groupId))
                 return NotFound();
-            var students = _groupRepository.GetGroupStudents(groupId);
+            var studens = _mapper.Map<List<StudentDto>>(_groupRepository.GetGroupStudents(groupId));
             if (!ModelState.IsValid)
                 return BadRequest();
-            return Ok(students);
+            return Ok(studens);
         }
     }
 }

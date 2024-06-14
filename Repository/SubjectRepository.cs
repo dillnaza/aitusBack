@@ -1,5 +1,6 @@
 ﻿using aitus.Interfaces;
 using aitus.Models;
+using System.Text.RegularExpressions;
 
 namespace aitus.Repository
 {
@@ -9,7 +10,7 @@ namespace aitus.Repository
 
         public SubjectRepository(DataContext dataContext)
         {
-            _context = dataContext; ;            
+            _context = dataContext; ;
         }
 
         public Subject GetSubject(int Id)
@@ -26,5 +27,6 @@ namespace aitus.Repository
         {
             return _context.Subjects.Any(s => s.SubjectId == Id);
         }
+
     }
 }
