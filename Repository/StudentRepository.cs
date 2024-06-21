@@ -1,4 +1,4 @@
-﻿using aituss.Interfaces;
+﻿using aitus.Interfaces;
 using aitus.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,14 +13,14 @@ namespace aituss.Repository
             _context = context;
         }
 
-        public ICollection<Student> GetStudents()
-        {
-            return _context.Students.OrderBy(s => s.StudentId).ToList();
-        }
-
         public Student GetStudent(int Id)
         {
             return _context.Students.Where(s => s.StudentId == Id).FirstOrDefault();
+        }
+
+        public ICollection<Student> GetStudents()
+        {
+            return _context.Students.OrderBy(s => s.StudentId).ToList();
         }
 
         public int GetStudentBarcode(string Email)

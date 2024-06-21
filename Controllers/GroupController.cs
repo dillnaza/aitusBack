@@ -1,14 +1,16 @@
-﻿using aitus.Dto;
-using aitus.Interfaces;
-using aitus.Models;
+﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using aitus.Dto;
+using aitus.Interfaces;
+using aitus.Models;
 
 namespace aitus.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupController : Controller
+    public class GroupController : ControllerBase
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IMapper _mapper;
@@ -20,39 +22,37 @@ namespace aitus.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Group>))]
+        [ProducesResponseType(200, Type = typeof(List<GroupDto>))]
         public IActionResult GetGroups()
         {
-            var groups = _mapper.Map<List<GroupDto>>(_groupRepository.GetGroups());
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(groups);
+            var groups = _groupRepository.GetGroups();
+            var groupDtos = _mapper.Map<List<GroupDto>>(groups);
+            return Ok(groupDtos);
         }
 
         [HttpGet("{groupId}")]
-        [ProducesResponseType(200, Type = typeof(Group))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(200, Type = typeof(GroupDto))]
+        [ProducesResponseType(404)]
         public IActionResult GetGroup(int groupId)
         {
-            if (!_groupRepository.GroupExists(groupId))
+            var group = _groupRepository.GetGroup(groupId);
+            if (group == null)
                 return NotFound();
-            var group = _mapper.Map<GroupDto>(_groupRepository.GetGroup(groupId));
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(group);
+            var groupDto = _mapper.Map<GroupDto>(group);
+            return Ok(groupDto);
         }
 
         [HttpGet("{groupId}/students")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<StudentDto>))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(200, Type = typeof(List<StudentDto>))]
+        [ProducesResponseType(404)]
         public IActionResult GetGroupStudents(int groupId)
         {
-            if (!_groupRepository.GroupExists(groupId))
+            var groupExists = _groupRepository.GroupExists(groupId);
+            if (!groupExists)
                 return NotFound();
-            var studens = _mapper.Map<List<StudentDto>>(_groupRepository.GetGroupStudents(groupId));
-            if (!ModelState.IsValid)
-                return BadRequest();
-            return Ok(studens);
+            var students = _groupRepository.GetGroupStudents(groupId);
+            var studentDtos = _mapper.Map<List<StudentDto>>(students);
+            return Ok(studentDtos);
         }
     }
 }

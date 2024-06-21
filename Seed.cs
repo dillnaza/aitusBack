@@ -20,7 +20,7 @@ namespace aitus.Data
             {
                 var students = new List<Student>
                 {
-                    new() {
+                    new Student {
                         Email = "student1@example.com",
                         Name = "John",
                         Surname = "Doe",
@@ -29,9 +29,9 @@ namespace aitus.Data
                         GroupId = 1,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
-                        AttendanceStudents = []
+                        AttendanceStudents = new List<AttendanceStudent>()
                     },
-                    new() {
+                    new Student {
                         Email = "student2@example.com",
                         Name = "Jane",
                         Surname = "Smith",
@@ -40,7 +40,7 @@ namespace aitus.Data
                         GroupId = 2,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
-                        AttendanceStudents = []
+                        AttendanceStudents = new List<AttendanceStudent>()
                     }
                 };
                 _context.Students.AddRange(students);
@@ -50,7 +50,7 @@ namespace aitus.Data
             {
                 var teachers = new List<Teacher>
                 {
-                    new() {
+                    new Teacher {
                         Email = "teacher1@example.com",
                         Name = "Alice",
                         Surname = "Johnson",
@@ -58,10 +58,10 @@ namespace aitus.Data
                         Password = "password789",
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
-                        TeacherSubjects = [],
-                        GroupTeachers = []
+                        TeacherSubjects = new List<TeacherSubject>(),
+                        GroupTeachers = new List<GroupTeacher>()
                     },
-                    new()  {
+                    new Teacher {
                         Email = "teacher2@example.com",
                         Name = "Bob",
                         Surname = "Williams",
@@ -69,8 +69,8 @@ namespace aitus.Data
                         Password = "password012",
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
-                        TeacherSubjects =[],
-                        GroupTeachers = []
+                        TeacherSubjects = new List<TeacherSubject>(),
+                        GroupTeachers = new List<GroupTeacher>()
                     }
                 };
                 _context.Teachers.AddRange(teachers);
@@ -80,23 +80,23 @@ namespace aitus.Data
             {
                 var subjects = new List<Subject>
                 {
-                    new() {
-                        SubjectName = "Mathematics",
-                        AmountOfCredits = 3,
+                    new Subject {
+                        SubjectName = "Calculus 1",
+                        AmountOfCredits = 5,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
-                        GroupSubjects = [],
-                        TeacherSubjects = [],
-                        AttendanceSubjects = []
+                        GroupSubjects = new List<GroupSubject>(),
+                        TeacherSubjects = new List<TeacherSubject>(),
+                        AttendanceSubjects = new List<AttendanceSubject>()
                     },
-                    new() {
-                        SubjectName = "History",
+                    new Subject {
+                        SubjectName = "History of Kazakhstan",
                         AmountOfCredits = 2,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
-                        GroupSubjects = [],
-                        TeacherSubjects = [],
-                        AttendanceSubjects = []
+                        GroupSubjects = new List<GroupSubject>(),
+                        TeacherSubjects = new List<TeacherSubject>(),
+                        AttendanceSubjects = new List<AttendanceSubject>()
                     }
                 };
                 _context.Subjects.AddRange(subjects);
@@ -106,22 +106,21 @@ namespace aitus.Data
             {
                 var groups = new List<Group>
                 {
-                    new() {
-                        GroupName = "Group A",
+                    new Group {
+                        GroupName = "SE-0000",
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
-                        Students = [],
-                        GroupSubjects = [],
-                        GroupTeachers = []
+                        Students = new List<Student>(),
+                        GroupSubjects = new List<GroupSubject>(),
+                        GroupTeachers = new List<GroupTeacher>()
                     },
-                    new Group
-                    {
-                        GroupName = "Group B",
+                    new Group {
+                        GroupName = "SE-0001",
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
-                        Students = [],
-                        GroupSubjects = [],
-                        GroupTeachers = []
+                        Students = new List<Student>(),
+                        GroupSubjects = new List<GroupSubject>(),
+                        GroupTeachers = new List<GroupTeacher>()
                     }
                 };
                 _context.Groups.AddRange(groups);
@@ -131,21 +130,19 @@ namespace aitus.Data
             {
                 var attendances = new List<Attendance>
                 {
-                    new() {
+                    new Attendance {
                         Date = DateTime.UtcNow,
-                        Status = "Present",
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
-                        AttendanceStudents = [],
-                        AttendanceSubjects = []
+                        AttendanceStudents = new List<AttendanceStudent>(),
+                        AttendanceSubjects = new List<AttendanceSubject>()
                     },
-                    new() {
+                    new Attendance {
                         Date = DateTime.UtcNow,
-                        Status = "Absent",
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
-                        AttendanceStudents = [],
-                        AttendanceSubjects = []
+                        AttendanceStudents = new List<AttendanceStudent>(),
+                        AttendanceSubjects = new List<AttendanceSubject>()
                     }
                 };
                 _context.Attendances.AddRange(attendances);

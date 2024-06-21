@@ -1,5 +1,4 @@
 ﻿using aitus.Models;
-using System.Collections.Generic;
 
 namespace aitus.Interfaces
 {
@@ -9,7 +8,10 @@ namespace aitus.Interfaces
         ICollection<Attendance> GetAttendances();
         bool AttendanceExist(int Id);
         double GetAttendancePercent(int studentId, int subjectId);
-        public ICollection<Attendance> GetAttendancesByStudentIdAndSubject(int studentId, int subjectId);
-
+        ICollection<AttendanceStudent> GetAttendancesByStudentIdAndSubject(int studentId, int subjectId);
+        IEnumerable<DateTime> GetAttendanceDatesByGroupIdAndSubjectId(int groupId, int subjectId); 
+        IEnumerable<AttendanceStudent> GetAttendancesByGroupIdAndSubjectIdAndDate(int groupId, int subjectId, DateTime date);
+        void AddAttendance(Attendance attendance);
+        bool Save();
     }
 }

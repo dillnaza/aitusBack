@@ -39,7 +39,7 @@ namespace aitus.Repository
 
         public bool TeachesSubject(int teacherId, int subjectId)
         {
-            return _context.TeachersSubjects
+            return _context.TeacherSubjects
                            .Any(ts => ts.TeacherId == teacherId && ts.SubjectId == subjectId);
         }
 

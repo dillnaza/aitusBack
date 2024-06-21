@@ -1,6 +1,4 @@
-﻿using aitus.Models;
-
-namespace aitus.Dto
+﻿namespace aitus.Dto
 {
     public class SubjectGroupDto
     {

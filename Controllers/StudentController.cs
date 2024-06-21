@@ -1,6 +1,6 @@
 ﻿using aitus.Dto;
+using aitus.Interfaces;
 using aitus.Models;
-using aituss.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

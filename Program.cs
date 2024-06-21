@@ -2,7 +2,7 @@ using aitus.Data;
 using aitus.Interfaces;
 using aitus.Repositories;
 using aitus.Repository;
-using aituss.Interfaces;
+using aitus.Interfaces;
 using aituss.Repository;
 using Microsoft.EntityFrameworkCore;
 

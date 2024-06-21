@@ -8,10 +8,10 @@ namespace aitus.Interfaces
         ICollection<Teacher> GetTeachers();
         int GetTeacherBarcode(string Email);
         bool TeacherExists(int Id);
-        public bool TeachesSubject(int teacherId, int subjectId);
-        public IEnumerable<Group> GetGroupTeacherGroups(int teacherId);
-        public IEnumerable<GroupSubject> GetTeacherSubjects(int teacherId);
-        public Teacher GetTeacherNameBySubjectAndGroup(int subjectId, int groupId);
+        bool TeachesSubject(int teacherId, int subjectId);
+        IEnumerable<Group> GetGroupTeacherGroups(int teacherId);
+        IEnumerable<GroupSubject> GetTeacherSubjects(int teacherId);
+        Teacher GetTeacherNameBySubjectAndGroup(int subjectId, int groupId);
         Task<Teacher> GetTeacherByEmailAndPasswordAsync(string email, string password);
     }
 }

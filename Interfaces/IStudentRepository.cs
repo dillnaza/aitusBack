@@ -1,6 +1,6 @@
 ﻿using aitus.Models;
 
-namespace aituss.Interfaces
+namespace aitus.Interfaces
 {
     public interface IStudentRepository
     {
