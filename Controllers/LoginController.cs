@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using aitus.Interfaces;
 using aitus.Models;
-using aitus.Interfaces;
 
 namespace aitus.Controllers
 {
@@ -24,11 +23,11 @@ namespace aitus.Controllers
         {
             var student = await _studentRepository.GetStudentByEmailAndPasswordAsync(request.Email, request.Password);
             if (student != null)
-                return RedirectToAction("GetStudentSubjects", "StudentMain", new { studentId = student.StudentId });
+                return Ok(new { UserType = "Student", UserDetails = student });
             var teacher = await _teacherRepository.GetTeacherByEmailAndPasswordAsync(request.Email, request.Password);
             if (teacher != null)
-                return RedirectToAction("GetTeacherSubjects", "TeacherMain", new { teacherId = teacher.TeacherId });
-            return BadRequest("Invalid email or password");
-        } 
+                return Ok(new { UserType = "Teacher", UserDetails = teacher });
+            return BadRequest(new { Message = "Invalid email or password" });
+        }
     }
 }
