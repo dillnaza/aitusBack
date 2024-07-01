@@ -4,13 +4,7 @@ C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\AutoMapper.dll
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
-C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
-C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\Microsoft.Identity.Client.dll
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\Microsoft.OpenApi.dll
-C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
-C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
-C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll

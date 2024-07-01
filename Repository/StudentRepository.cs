@@ -2,7 +2,7 @@
 using aitus.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace aituss.Repository
+namespace aitus.Repository
 {
     public class StudentRepository : IStudentRepository
     {

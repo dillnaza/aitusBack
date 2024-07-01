@@ -1,9 +1,6 @@
 using aitus.Data;
 using aitus.Interfaces;
-using aitus.Repositories;
 using aitus.Repository;
-using aitus.Interfaces;
-using aituss.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,16 +15,18 @@ builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 
+// Configure CORS
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddDefaultPolicy(policyBuilder =>
     {
-        builder.WithOrigins("http://localhost:5000")
-        .AllowAnyHeader()
-        .AllowAnyMethod();
+        policyBuilder.AllowAnyOrigin()
+                     .AllowAnyHeader()
+                     .AllowAnyMethod();
     });
 });
 
+// Configure the database context
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -39,6 +38,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Seed data if the application is run with the "seeddata" argument
 if (args != null && args.Length == 1 && args[0].ToLower() == "seeddata")
 {
     SeedData(app);
@@ -72,9 +72,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors();  // Enable CORS
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

@@ -23,11 +23,15 @@ namespace aitus.Controllers
         {
             var student = await _studentRepository.GetStudentByEmailAndPasswordAsync(request.Email, request.Password);
             if (student != null)
-                return Ok(new { UserType = "Student", UserDetails = student });
+            {
+                return Ok(new { UserType = "Student", UserId = student.StudentId });
+            }
             var teacher = await _teacherRepository.GetTeacherByEmailAndPasswordAsync(request.Email, request.Password);
             if (teacher != null)
-                return Ok(new { UserType = "Teacher", UserDetails = teacher });
-            return BadRequest(new { Message = "Invalid email or password" });
+            {
+                return Ok(new { UserType = "Teacher", UserId = teacher.TeacherId });
+            }
+            return BadRequest("Invalid email or password");
         }
     }
 }

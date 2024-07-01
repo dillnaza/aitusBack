@@ -2,7 +2,7 @@
 using aitus.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace aitus.Repositories
+namespace aitus.Repository
 {
     public class GroupRepository : IGroupRepository
     {
