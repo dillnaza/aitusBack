@@ -1,9 +1,6 @@
 ﻿using aitus.Interfaces;
 using aitus.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace aitus.Repository
 {
@@ -77,6 +74,7 @@ namespace aitus.Repository
                            .Select(ass => ass.Attendance.Date)
                            .ToList();
         }
+
         public IEnumerable<AttendanceStudent> GetAttendancesByGroupIdAndSubjectIdAndDate(int groupId, int subjectId, DateTime date)
         {
             return _context.AttendanceStudents
@@ -86,6 +84,39 @@ namespace aitus.Repository
                 .Where(ass => ass.Attendance.AttendanceSubjects.Any(ats => ats.SubjectId == subjectId))
                 .Where(ass => ass.Student.GroupId == groupId)
                 .ToList();
+        }
+
+        public void AddAttendance(Attendance attendance)
+        {
+            _context.Attendances.Add(attendance);
+        }
+
+        public void DeleteAttendance(Attendance attendance)
+        {
+            _context.Attendances.Remove(attendance);
+        }
+
+        public Attendance GetAttendanceByDateAndSubjectId(DateTime date, int subjectId)
+        {
+            return _context.AttendanceSubjects
+                           .Where(ass => ass.SubjectId == subjectId && ass.Attendance.Date.Date == date.Date)
+                           .Select(ass => ass.Attendance)
+                           .FirstOrDefault();
+        }
+
+        public void AddAttendanceSubject(AttendanceSubject attendanceSubject)
+        {
+            _context.AttendanceSubjects.Add(attendanceSubject);
+        }
+
+        public void AddAttendanceStudent(AttendanceStudent attendanceStudent)
+        {
+            _context.AttendanceStudents.Add(attendanceStudent);
+        }
+
+        public bool Save()
+        {
+            return _context.SaveChanges() > 0;
         }
     }
 }

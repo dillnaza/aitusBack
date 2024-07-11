@@ -1,5 +1,6 @@
 ﻿using aitus.Dto;
 using aitus.Interfaces;
+using aitus.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -120,7 +121,6 @@ namespace aitus.Controllers
             if (!_groupRepository.GroupExists(groupId))
                 return NotFound($"Group with ID {groupId} not found.");
 
-            var teacher = _teacherRepository.GetTeacher(teacherId);
             var groupSubjects = _groupRepository.GetGroupSubjects(groupId);
 
             if (!groupSubjects.Any(gs => gs.SubjectId == subjectId && _teacherRepository.TeachesSubject(teacherId, gs.SubjectId)))
@@ -128,10 +128,23 @@ namespace aitus.Controllers
                 return NotFound($"The teacher with ID {teacherId} does not teach the subject with ID {subjectId} in the group with ID {groupId}.");
             }
 
+            var attendance = _attendanceRepository.GetAttendanceByDateAndSubjectId(date, subjectId);
+            if (attendance == null)
+            {
+                return NotFound($"Attendance date {date} for subject with ID {subjectId} not found.");
+            }
+
+            var attendanceRecords = _attendanceRepository.GetAttendancesByGroupIdAndSubjectIdAndDate(groupId, subjectId, date).ToList();
+
+            if (!attendanceRecords.Any())
+            {
+                return NotFound($"No attendance records found for date {date}, subject ID {subjectId}, group ID {groupId}, and teacher ID {teacherId}.");
+            }
+
+            var teacher = _teacherRepository.GetTeacher(teacherId);
             var teacherBarcode = _teacherRepository.GetTeacherBarcode(teacher.Email);
             var subject = _subjectRepository.GetSubject(subjectId);
             var group = _groupRepository.GetGroup(groupId);
-            var attendanceRecords = _attendanceRepository.GetAttendancesByGroupIdAndSubjectIdAndDate(groupId, subjectId, date).ToList();
 
             var studentAttendances = attendanceRecords.Select(ar => new StudentAttendanceStatusDto
             {
@@ -151,6 +164,103 @@ namespace aitus.Controllers
             };
 
             return Ok(studentAttendanceDto);
+        }
+
+        [HttpPost("{teacherId}/subject/{subjectId}/group/{groupId}/attendance-dates")]
+        public IActionResult AddAttendanceDate(int teacherId, int subjectId, int groupId, [FromBody] DateTime date)
+        {
+            if (!_teacherRepository.TeacherExists(teacherId))
+                return NotFound($"Teacher with ID {teacherId} not found.");
+
+            if (!_subjectRepository.SubjectExists(subjectId))
+                return NotFound($"Subject with ID {subjectId} not found.");
+
+            if (!_groupRepository.GroupExists(groupId))
+                return NotFound($"Group with ID {groupId} not found.");
+
+            var groupSubjects = _groupRepository.GetGroupSubjects(groupId);
+
+            if (!groupSubjects.Any(gs => gs.SubjectId == subjectId && _teacherRepository.TeachesSubject(teacherId, gs.SubjectId)))
+            {
+                return NotFound($"The teacher with ID {teacherId} does not teach the subject with ID {subjectId} in the group with ID {groupId}.");
+            }
+
+            var existingAttendance = _attendanceRepository.GetAttendanceByDateAndSubjectId(date, subjectId);
+            if (existingAttendance != null)
+            {
+                return Conflict($"Attendance date {date} for subject with ID {subjectId} already exists.");
+            }
+
+            var attendance = new Attendance
+            {
+                Date = date,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _attendanceRepository.AddAttendance(attendance);
+            _attendanceRepository.Save();
+
+            var attendanceSubject = new AttendanceSubject
+            {
+                AttendanceId = attendance.AttendanceId,
+                SubjectId = subjectId,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _attendanceRepository.AddAttendanceSubject(attendanceSubject);
+            _attendanceRepository.Save();
+
+            var students = _groupRepository.GetGroupStudents(groupId);
+            foreach (var student in students)
+            {
+                var attendanceStudent = new AttendanceStudent
+                {
+                    AttendanceId = attendance.AttendanceId,
+                    StudentId = student.StudentId,
+                    Status = AttendanceStatus.Present,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                _attendanceRepository.AddAttendanceStudent(attendanceStudent);
+            }
+
+            _attendanceRepository.Save();
+
+            return Ok();
+        }
+
+        [HttpDelete("{teacherId}/subject/{subjectId}/group/{groupId}/attendance-dates/{date}")]
+        public IActionResult DeleteAttendanceDate(int teacherId, int subjectId, int groupId, DateTime date)
+        {
+            if (!_teacherRepository.TeacherExists(teacherId))
+                return NotFound($"Teacher with ID {teacherId} not found.");
+
+            if (!_subjectRepository.SubjectExists(subjectId))
+                return NotFound($"Subject with ID {subjectId} not found.");
+
+            if (!_groupRepository.GroupExists(groupId))
+                return NotFound($"Group with ID {groupId} not found.");
+
+            var groupSubjects = _groupRepository.GetGroupSubjects(groupId);
+
+            if (!groupSubjects.Any(gs => gs.SubjectId == subjectId && _teacherRepository.TeachesSubject(teacherId, gs.SubjectId)))
+            {
+                return NotFound($"The teacher with ID {teacherId} does not teach the subject with ID {subjectId} in the group with ID {groupId}.");
+            }
+
+            var attendance = _attendanceRepository.GetAttendanceByDateAndSubjectId(date, subjectId);
+            if (attendance == null)
+            {
+                return NotFound($"Attendance date {date} for subject with ID {subjectId} not found.");
+            }
+
+            _attendanceRepository.DeleteAttendance(attendance);
+            _attendanceRepository.Save();
+
+            return Ok();
         }
     }
 }
