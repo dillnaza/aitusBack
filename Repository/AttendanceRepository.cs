@@ -52,7 +52,6 @@ namespace aitus.Repository
             }
             catch (InvalidCastException ex)
             {
-                // Log the exception details
                 Console.WriteLine($"Error casting types: {ex.Message}");
                 throw;
             }
@@ -87,25 +86,6 @@ namespace aitus.Repository
                 .Where(ass => ass.Attendance.AttendanceSubjects.Any(ats => ats.SubjectId == subjectId))
                 .Where(ass => ass.Student.GroupId == groupId)
                 .ToList();
-        }
-
-        public void AddAttendance(Attendance attendance)
-        {
-            _context.Attendances.Add(attendance);
-        }
-
-        public bool Save()
-        {
-            try
-            {
-                return _context.SaveChanges() > 0;
-            }
-            catch (DbUpdateException ex)
-            {
-                // Log the exception (optional)
-                Console.WriteLine($"Error saving changes: {ex.Message}");
-                return false;
-            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using aitus.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,6 +38,7 @@ namespace aitus.Controllers
             var teacher = _teacherRepository.GetTeacher(teacherId);
             if (teacher == null)
                 return NotFound($"Teacher with ID {teacherId} not found.");
+
             var groups = _teacherRepository.GetGroupTeacherGroups(teacherId).ToList();
             var subjects = _teacherRepository.GetTeacherSubjects(teacherId)
                 .Select(gs => gs.Subject)
@@ -44,6 +46,7 @@ namespace aitus.Controllers
                 .ToList();
             var teacherBarcode = _teacherRepository.GetTeacherBarcode(teacher.Email);
             var subjectGroupList = new List<SubjectGroupDto>();
+
             foreach (var group in groups)
             {
                 var groupSubjects = _groupRepository.GetGroupSubjects(group.GroupId)
@@ -55,6 +58,7 @@ namespace aitus.Controllers
                     });
                 subjectGroupList.AddRange(groupSubjects);
             }
+
             var teacherDto = new TeacherSubjectDto
             {
                 TeacherBarcode = teacherBarcode,
@@ -79,6 +83,13 @@ namespace aitus.Controllers
                 return NotFound($"Group with ID {groupId} not found.");
 
             var teacher = _teacherRepository.GetTeacher(teacherId);
+            var groupSubjects = _groupRepository.GetGroupSubjects(groupId);
+
+            if (!groupSubjects.Any(gs => gs.SubjectId == subjectId && _teacherRepository.TeachesSubject(teacherId, gs.SubjectId)))
+            {
+                return NotFound($"The teacher with ID {teacherId} does not teach the subject with ID {subjectId} in the group with ID {groupId}.");
+            }
+
             var teacherBarcode = _teacherRepository.GetTeacherBarcode(teacher.Email);
             var subject = _subjectRepository.GetSubject(subjectId);
             var group = _groupRepository.GetGroup(groupId);
@@ -110,6 +121,13 @@ namespace aitus.Controllers
                 return NotFound($"Group with ID {groupId} not found.");
 
             var teacher = _teacherRepository.GetTeacher(teacherId);
+            var groupSubjects = _groupRepository.GetGroupSubjects(groupId);
+
+            if (!groupSubjects.Any(gs => gs.SubjectId == subjectId && _teacherRepository.TeachesSubject(teacherId, gs.SubjectId)))
+            {
+                return NotFound($"The teacher with ID {teacherId} does not teach the subject with ID {subjectId} in the group with ID {groupId}.");
+            }
+
             var teacherBarcode = _teacherRepository.GetTeacherBarcode(teacher.Email);
             var subject = _subjectRepository.GetSubject(subjectId);
             var group = _groupRepository.GetGroup(groupId);

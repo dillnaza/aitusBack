@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using aitus.Interfaces;
-using aitus.Models;
 
 namespace aitus.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
-    {
+    { 
         private readonly IStudentRepository _studentRepository;
         private readonly ITeacherRepository _teacherRepository;
 

@@ -3,6 +3,7 @@ using aitus.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace aitus.Controllers
 {
@@ -87,6 +88,13 @@ namespace aitus.Controllers
                 return NotFound($"Subject with ID {subjectId} not found.");
 
             var student = _studentRepository.GetStudent(studentId);
+            var groupSubjects = _groupRepository.GetGroupSubjects(student.GroupId);
+
+            if (!groupSubjects.Any(gs => gs.SubjectId == subjectId))
+            {
+                return NotFound($"The student with ID {studentId} does not have the subject with ID {subjectId}.");
+            }
+
             var group = _groupRepository.GetGroup(student.GroupId);
             var subject = _subjectRepository.GetSubject(subjectId);
             var subjectTeacher = _teacherRepository.GetTeacherNameBySubjectAndGroup(subjectId, group.GroupId);
@@ -94,11 +102,10 @@ namespace aitus.Controllers
             var attendanceRecords = _attendanceRepository.GetAttendancesByStudentIdAndSubject(studentId, subjectId);
             var attendancePercent = _attendanceRepository.GetAttendancePercent(studentId, subjectId);
 
-            // Map AttendanceStudent to AttendanceDto
             var attendanceDtos = attendanceRecords.Select(ar => new AttendanceDto
             {
                 Date = ar.Attendance.Date,
-                Status = ar.Status.ToString() // Map the status correctly
+                Status = ar.Status.ToString() 
             }).ToList();
 
             var studentAttendanceDto = new StudentAttendanceDto
@@ -116,6 +123,5 @@ namespace aitus.Controllers
 
             return Ok(studentAttendanceDto);
         }
-
     }
 }

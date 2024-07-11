@@ -11,7 +11,5 @@ namespace aitus.Interfaces
         ICollection<AttendanceStudent> GetAttendancesByStudentIdAndSubject(int studentId, int subjectId);
         IEnumerable<DateTime> GetAttendanceDatesByGroupIdAndSubjectId(int groupId, int subjectId); 
         IEnumerable<AttendanceStudent> GetAttendancesByGroupIdAndSubjectIdAndDate(int groupId, int subjectId, DateTime date);
-        void AddAttendance(Attendance attendance);
-        bool Save();
     }
 }

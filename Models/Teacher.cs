@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace aitus.Models
+﻿namespace aitus.Models
 {
     public class Teacher
     {
