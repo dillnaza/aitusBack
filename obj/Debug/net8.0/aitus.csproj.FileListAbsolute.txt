@@ -176,3 +176,6 @@ C:\Users\Dilnaza\source\repos\aitus\obj\Debug\net8.0\refint\aitus.dll
 C:\Users\Dilnaza\source\repos\aitus\obj\Debug\net8.0\aitus.pdb
 C:\Users\Dilnaza\source\repos\aitus\obj\Debug\net8.0\aitus.genruntimeconfig.cache
 C:\Users\Dilnaza\source\repos\aitus\obj\Debug\net8.0\ref\aitus.dll
+C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\package-lock.json
+C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\package.json
+C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\aitus.staticwebassets.runtime.json
