@@ -39,7 +39,6 @@ namespace aitus.Controllers
             var teacher = _teacherRepository.GetTeacher(teacherId);
             if (teacher == null)
                 return NotFound($"Teacher with ID {teacherId} not found.");
-
             var groups = _teacherRepository.GetGroupTeacherGroups(teacherId).ToList();
             var subjects = _teacherRepository.GetTeacherSubjects(teacherId)
                 .Select(gs => gs.Subject)
@@ -47,7 +46,6 @@ namespace aitus.Controllers
                 .ToList();
             var teacherBarcode = _teacherRepository.GetTeacherBarcode(teacher.Email);
             var subjectGroupList = new List<SubjectGroupDto>();
-
             foreach (var group in groups)
             {
                 var groupSubjects = _groupRepository.GetGroupSubjects(group.GroupId)
@@ -59,7 +57,6 @@ namespace aitus.Controllers
                     });
                 subjectGroupList.AddRange(groupSubjects);
             }
-
             var teacherDto = new TeacherSubjectDto
             {
                 TeacherBarcode = teacherBarcode,
@@ -67,7 +64,6 @@ namespace aitus.Controllers
                 TeacherSurname = teacher.Surname,
                 SubjectGroup = subjectGroupList
             };
-
             return Ok(teacherDto);
         }
 
@@ -76,26 +72,20 @@ namespace aitus.Controllers
         {
             if (!_teacherRepository.TeacherExists(teacherId))
                 return NotFound($"Teacher with ID {teacherId} not found.");
-
             if (!_subjectRepository.SubjectExists(subjectId))
                 return NotFound($"Subject with ID {subjectId} not found.");
-
             if (!_groupRepository.GroupExists(groupId))
                 return NotFound($"Group with ID {groupId} not found.");
-
             var teacher = _teacherRepository.GetTeacher(teacherId);
             var groupSubjects = _groupRepository.GetGroupSubjects(groupId);
-
             if (!groupSubjects.Any(gs => gs.SubjectId == subjectId && _teacherRepository.TeachesSubject(teacherId, gs.SubjectId)))
             {
                 return NotFound($"The teacher with ID {teacherId} does not teach the subject with ID {subjectId} in the group with ID {groupId}.");
             }
-
             var teacherBarcode = _teacherRepository.GetTeacherBarcode(teacher.Email);
             var subject = _subjectRepository.GetSubject(subjectId);
             var group = _groupRepository.GetGroup(groupId);
             var attendanceDates = _attendanceRepository.GetAttendanceDatesByGroupIdAndSubjectId(groupId, subjectId).ToList();
-
             var teacherAttendanceDto = new TeacherAttendanceDto
             {
                 TeacherBarcode = teacherBarcode,
@@ -105,7 +95,6 @@ namespace aitus.Controllers
                 GroupName = group.GroupName,
                 AttendanceDates = attendanceDates
             };
-
             return Ok(teacherAttendanceDto);
         }
 
@@ -114,45 +103,35 @@ namespace aitus.Controllers
         {
             if (!_teacherRepository.TeacherExists(teacherId))
                 return NotFound($"Teacher with ID {teacherId} not found.");
-
             if (!_subjectRepository.SubjectExists(subjectId))
                 return NotFound($"Subject with ID {subjectId} not found.");
-
             if (!_groupRepository.GroupExists(groupId))
                 return NotFound($"Group with ID {groupId} not found.");
-
             var groupSubjects = _groupRepository.GetGroupSubjects(groupId);
-
             if (!groupSubjects.Any(gs => gs.SubjectId == subjectId && _teacherRepository.TeachesSubject(teacherId, gs.SubjectId)))
             {
                 return NotFound($"The teacher with ID {teacherId} does not teach the subject with ID {subjectId} in the group with ID {groupId}.");
             }
-
             var attendance = _attendanceRepository.GetAttendanceByDateAndSubjectId(date, subjectId);
             if (attendance == null)
             {
                 return NotFound($"Attendance date {date} for subject with ID {subjectId} not found.");
             }
-
             var attendanceRecords = _attendanceRepository.GetAttendancesByGroupIdAndSubjectIdAndDate(groupId, subjectId, date).ToList();
-
             if (!attendanceRecords.Any())
             {
                 return NotFound($"No attendance records found for date {date}, subject ID {subjectId}, group ID {groupId}, and teacher ID {teacherId}.");
             }
-
             var teacher = _teacherRepository.GetTeacher(teacherId);
             var teacherBarcode = _teacherRepository.GetTeacherBarcode(teacher.Email);
             var subject = _subjectRepository.GetSubject(subjectId);
             var group = _groupRepository.GetGroup(groupId);
-
             var studentAttendances = attendanceRecords.Select(ar => new StudentAttendanceStatusDto
             {
                 StudentName = ar.Student.Name,
                 StudentSurname = ar.Student.Surname,
                 Status = ar.Status.ToString()
             }).ToList();
-
             var studentAttendanceDto = new StudentAttendancesDto
             {
                 TeacherBarcode = teacherBarcode,
@@ -163,7 +142,6 @@ namespace aitus.Controllers
                 Date = date,
                 StudentAttendances = studentAttendances
             };
-
             return Ok(studentAttendanceDto);
         }
 
@@ -172,24 +150,18 @@ namespace aitus.Controllers
         {
             if (!_teacherRepository.TeacherExists(teacherId))
                 return NotFound($"Teacher with ID {teacherId} not found.");
-
             if (!_subjectRepository.SubjectExists(subjectId))
                 return NotFound($"Subject with ID {subjectId} not found.");
-
             if (!_groupRepository.GroupExists(groupId))
                 return NotFound($"Group with ID {groupId} not found.");
-
             if (!_teacherRepository.TeachesSubject(teacherId, subjectId))
                 return NotFound($"The teacher with ID {teacherId} does not teach the subject with ID {subjectId}.");
-
             var attendance = _attendanceRepository.GetAttendanceByDateAndSubjectId(date, subjectId);
             if (attendance == null)
                 return NotFound($"Attendance date {date} for subject with ID {subjectId} not found.");
-
             var attendanceStudents = _attendanceRepository.GetAttendancesByGroupIdAndSubjectIdAndDate(groupId, subjectId, date).ToList();
             if (!attendanceStudents.Any())
                 return NotFound($"No attendance records found for date {date}, subject ID {subjectId}, and group ID {groupId}.");
-
             foreach (var studentStatus in studentAttendanceStatusList)
             {
                 var attendanceStudent = attendanceStudents.FirstOrDefault(a => a.Student.Name == studentStatus.StudentName && a.Student.Surname == studentStatus.StudentSurname);
@@ -199,9 +171,7 @@ namespace aitus.Controllers
                     attendanceStudent.UpdatedAt = DateTime.UtcNow;
                 }
             }
-
             _attendanceRepository.Save();
-
             return Ok();
         }
 
@@ -210,36 +180,28 @@ namespace aitus.Controllers
         {
             if (!_teacherRepository.TeacherExists(teacherId))
                 return NotFound($"Teacher with ID {teacherId} not found.");
-
             if (!_subjectRepository.SubjectExists(subjectId))
                 return NotFound($"Subject with ID {subjectId} not found.");
-
             if (!_groupRepository.GroupExists(groupId))
                 return NotFound($"Group with ID {groupId} not found.");
-
             var groupSubjects = _groupRepository.GetGroupSubjects(groupId);
-
             if (!groupSubjects.Any(gs => gs.SubjectId == subjectId && _teacherRepository.TeachesSubject(teacherId, gs.SubjectId)))
             {
                 return NotFound($"The teacher with ID {teacherId} does not teach the subject with ID {subjectId} in the group with ID {groupId}.");
             }
-
             var existingAttendance = _attendanceRepository.GetAttendanceByDateAndSubjectId(date, subjectId);
             if (existingAttendance != null)
             {
                 return Conflict($"Attendance date {date} for subject with ID {subjectId} already exists.");
             }
-
             var attendance = new Attendance
             {
                 Date = date,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
-
             _attendanceRepository.AddAttendance(attendance);
             _attendanceRepository.Save();
-
             var attendanceSubject = new AttendanceSubject
             {
                 AttendanceId = attendance.AttendanceId,
@@ -247,10 +209,8 @@ namespace aitus.Controllers
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
-
             _attendanceRepository.AddAttendanceSubject(attendanceSubject);
             _attendanceRepository.Save();
-
             var students = _groupRepository.GetGroupStudents(groupId);
             foreach (var student in students)
             {
@@ -262,12 +222,9 @@ namespace aitus.Controllers
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };
-
                 _attendanceRepository.AddAttendanceStudent(attendanceStudent);
             }
-
             _attendanceRepository.Save();
-
             return Ok();
         }
 
@@ -276,29 +233,22 @@ namespace aitus.Controllers
         {
             if (!_teacherRepository.TeacherExists(teacherId))
                 return NotFound($"Teacher with ID {teacherId} not found.");
-
             if (!_subjectRepository.SubjectExists(subjectId))
                 return NotFound($"Subject with ID {subjectId} not found.");
-
             if (!_groupRepository.GroupExists(groupId))
                 return NotFound($"Group with ID {groupId} not found.");
-
             var groupSubjects = _groupRepository.GetGroupSubjects(groupId);
-
             if (!groupSubjects.Any(gs => gs.SubjectId == subjectId && _teacherRepository.TeachesSubject(teacherId, gs.SubjectId)))
             {
                 return NotFound($"The teacher with ID {teacherId} does not teach the subject with ID {subjectId} in the group with ID {groupId}.");
             }
-
             var attendance = _attendanceRepository.GetAttendanceByDateAndSubjectId(date, subjectId);
             if (attendance == null)
             {
                 return NotFound($"Attendance date {date} for subject with ID {subjectId} not found.");
             }
-
             _attendanceRepository.DeleteAttendance(attendance);
             _attendanceRepository.Save();
-
             return Ok();
         }
     }

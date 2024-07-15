@@ -41,13 +41,11 @@ namespace aitus.Controllers
         {
             if (!_studentRepository.StudentExists(studentId))
                 return NotFound();
-
             var student = _studentRepository.GetStudent(studentId);
             var studentBarcode = _studentRepository.GetStudentBarcode(student.Email);
             var group = _groupRepository.GetGroup(student.GroupId);
             var groupSubjects = _groupRepository.GetGroupSubjects(student.GroupId);
             var subjectTeacher = new List<SubjectTeacherDto>();
-
             foreach (var groupSubject in groupSubjects)
             {
                 var subject = _subjectRepository.GetSubject(groupSubject.SubjectId);
@@ -65,7 +63,6 @@ namespace aitus.Controllers
                     }
                 }
             }
-
             var studentAttendanceDto = new StudentSubjectDto
             {
                 StudentBarcode = studentBarcode,
@@ -74,7 +71,6 @@ namespace aitus.Controllers
                 GroupName = group.GroupName,
                 SubjectTeacher = subjectTeacher
             };
-
             return Ok(studentAttendanceDto);
         }
 
@@ -83,31 +79,25 @@ namespace aitus.Controllers
         {
             if (!_studentRepository.StudentExists(studentId))
                 return NotFound($"Student with ID {studentId} not found.");
-
             if (!_subjectRepository.SubjectExists(subjectId))
                 return NotFound($"Subject with ID {subjectId} not found.");
-
             var student = _studentRepository.GetStudent(studentId);
             var groupSubjects = _groupRepository.GetGroupSubjects(student.GroupId);
-
             if (!groupSubjects.Any(gs => gs.SubjectId == subjectId))
             {
                 return NotFound($"The student with ID {studentId} does not have the subject with ID {subjectId}.");
             }
-
             var group = _groupRepository.GetGroup(student.GroupId);
             var subject = _subjectRepository.GetSubject(subjectId);
             var subjectTeacher = _teacherRepository.GetTeacherNameBySubjectAndGroup(subjectId, group.GroupId);
             var studentBarcode = _studentRepository.GetStudentBarcode(student.Email);
             var attendanceRecords = _attendanceRepository.GetAttendancesByStudentIdAndSubject(studentId, subjectId);
             var attendancePercent = _attendanceRepository.GetAttendancePercent(studentId, subjectId);
-
             var attendanceDtos = attendanceRecords.Select(ar => new AttendanceDto
             {
                 Date = ar.Attendance.Date,
                 Status = ar.Status.ToString() 
             }).ToList();
-
             var studentAttendanceDto = new StudentAttendanceDto
             {
                 StudentBarcode = studentBarcode,
@@ -120,7 +110,6 @@ namespace aitus.Controllers
                 AttendancePercent = attendancePercent,
                 Attendances = attendanceDtos
             };
-
             return Ok(studentAttendanceDto);
         }
     }
