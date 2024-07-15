@@ -149,6 +149,7 @@ namespace aitus.Controllers
             var studentAttendances = attendanceRecords.Select(ar => new StudentAttendanceStatusDto
             {
                 StudentName = ar.Student.Name,
+                StudentSurname = ar.Student.Surname,
                 Status = ar.Status.ToString()
             }).ToList();
 
@@ -164,6 +165,44 @@ namespace aitus.Controllers
             };
 
             return Ok(studentAttendanceDto);
+        }
+
+        [HttpPost("{teacherId}/subject/{subjectId}/group/{groupId}/attendance/{date}")]
+        public IActionResult UpdateGroupAttendanceStatus(int teacherId, int subjectId, int groupId, DateTime date, [FromBody] List<StudentAttendanceStatusDto> studentAttendanceStatusList)
+        {
+            if (!_teacherRepository.TeacherExists(teacherId))
+                return NotFound($"Teacher with ID {teacherId} not found.");
+
+            if (!_subjectRepository.SubjectExists(subjectId))
+                return NotFound($"Subject with ID {subjectId} not found.");
+
+            if (!_groupRepository.GroupExists(groupId))
+                return NotFound($"Group with ID {groupId} not found.");
+
+            if (!_teacherRepository.TeachesSubject(teacherId, subjectId))
+                return NotFound($"The teacher with ID {teacherId} does not teach the subject with ID {subjectId}.");
+
+            var attendance = _attendanceRepository.GetAttendanceByDateAndSubjectId(date, subjectId);
+            if (attendance == null)
+                return NotFound($"Attendance date {date} for subject with ID {subjectId} not found.");
+
+            var attendanceStudents = _attendanceRepository.GetAttendancesByGroupIdAndSubjectIdAndDate(groupId, subjectId, date).ToList();
+            if (!attendanceStudents.Any())
+                return NotFound($"No attendance records found for date {date}, subject ID {subjectId}, and group ID {groupId}.");
+
+            foreach (var studentStatus in studentAttendanceStatusList)
+            {
+                var attendanceStudent = attendanceStudents.FirstOrDefault(a => a.Student.Name == studentStatus.StudentName && a.Student.Surname == studentStatus.StudentSurname);
+                if (attendanceStudent != null)
+                {
+                    attendanceStudent.Status = Enum.Parse<AttendanceStatus>(studentStatus.Status, true);
+                    attendanceStudent.UpdatedAt = DateTime.UtcNow;
+                }
+            }
+
+            _attendanceRepository.Save();
+
+            return Ok();
         }
 
         [HttpPost("{teacherId}/subject/{subjectId}/group/{groupId}/attendance-dates")]
