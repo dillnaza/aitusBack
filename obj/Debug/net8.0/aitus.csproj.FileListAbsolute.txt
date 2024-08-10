@@ -462,3 +462,6 @@ C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\out\out\out\out\out\out\out
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\out\out\out\out\out\out\out\publish\publish\publish\publish\publish\publish\publish\publish\aitus.runtimeconfig.json
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\out\out\out\out\out\out\out\publish\publish\publish\publish\publish\publish\publish\publish\appsettings.Development.json
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\out\out\out\out\out\out\out\publish\publish\publish\publish\publish\publish\publish\publish\appsettings.json
+C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\MyAttendanceApp\app.json
+C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\MyAttendanceApp\package-lock.json
+C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\MyAttendanceApp\package.json
