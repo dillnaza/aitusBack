@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("aitus")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0664a7a1b86256b4edf2a7bcc0876fb9e2d0873a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+72a7d8f4f4f3faf872ff32806aa60f8b0b012050")]
 [assembly: System.Reflection.AssemblyProductAttribute("aitus")]
 [assembly: System.Reflection.AssemblyTitleAttribute("aitus")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

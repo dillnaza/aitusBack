@@ -141,8 +141,5 @@ C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\out\appsettings.json
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\out\web.config
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\out\aitus.deps.json
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\out\aitus.runtimeconfig.json
-C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\MyAttendanceApp\app.json
-C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\MyAttendanceApp\package-lock.json
-C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\MyAttendanceApp\package.json
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\package-lock.json
 C:\Users\Dilnaza\source\repos\aitus\bin\Debug\net8.0\package.json
