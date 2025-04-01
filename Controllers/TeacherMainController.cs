@@ -37,8 +37,6 @@ namespace aitus.Controllers
         public IActionResult GetTeacherSubjects(int teacherId)
         {
             var teacher = _teacherRepository.GetTeacher(teacherId);
-            if (teacher == null)
-                return NotFound($"Teacher with ID {teacherId} not found.");
             var groups = _teacherRepository.GetGroupTeacherGroups(teacherId).ToList();
             var subjects = _teacherRepository.GetTeacherSubjects(teacherId)
                 .Select(gs => gs.Subject)
@@ -52,8 +50,10 @@ namespace aitus.Controllers
                     .Where(gs => subjects.Any(s => s.SubjectId == gs.SubjectId))
                     .Select(gs => new SubjectGroupDto
                     {
-                        GroupName = group.GroupName,
-                        SubjectName = gs.Subject.SubjectName
+                        SubjectId = gs.Subject.SubjectId,
+                        SubjectName = gs.Subject.SubjectName ?? string.Empty,
+                        GroupId = group.GroupId,
+                        GroupName = group.GroupName ?? string.Empty
                     });
                 subjectGroupList.AddRange(groupSubjects);
             }
@@ -66,6 +66,7 @@ namespace aitus.Controllers
             };
             return Ok(teacherDto);
         }
+
 
         [HttpGet("{teacherId}/subject/{subjectId}/group/{groupId}/attendance-dates")]
         public IActionResult GetAttendanceDatesByGroupIdAndSubjectId(int teacherId, int subjectId, int groupId)
