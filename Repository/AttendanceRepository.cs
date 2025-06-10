@@ -38,13 +38,10 @@ namespace aitus.Repository
                         .ThenInclude(att => att.AttendanceSubjects)
                     .Where(a => a.Attendance.AttendanceSubjects.Any(asub => asub.SubjectId == subjectId))
                     .ToList();
-
                 var totalClasses = attendances.Count;
                 var attendedClasses = attendances.Count(a => a.Status == AttendanceStatus.Present || a.Status == AttendanceStatus.Excused);
-
                 if (totalClasses == 0)
                     return 0;
-
                 return (double)attendedClasses / totalClasses * 100;
             }
             catch (InvalidCastException ex)
@@ -63,7 +60,6 @@ namespace aitus.Repository
                         .ThenInclude(ass => ass.Subject)
                 .Where(at => at.Attendance.AttendanceSubjects.Any(ass => ass.SubjectId == subjectId))
                 .ToList();
-
             return attendances;
         }
 
