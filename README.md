@@ -5,13 +5,6 @@ This project involves developing a universal mobile application for Astana IT Un
 ## Project Objective
 The main goal is to develop and implement a mobile application to facilitate student attendance management.
 
-## Team
-1. **Zarina Kutpanova** – Project Supervisor, PhD Candidate
-2. **Dilnaz Baidakhanova** – Team Leader, Backend Developer, second-year AITU student
-3. **Talgat Mukhtarov** – Backend Developer, second-year AITU student
-4. **Pavel Pak** – Frontend Developer, second-year AITU student
-5. **Erik Aktaev** – Backend Developer, first-year AITU student
-
 ## Features
 
 1. **User Registration and Authentication**
