@@ -9,22 +9,16 @@ The main goal is to develop and implement a mobile application to facilitate stu
 
 1. **User Registration and Authentication**
    - Secure registration and login functionality for new users.
-
 2. **Attendance Management**
    - Efficiently manage and track student attendance data.
-
 3. **User-Friendly Interface**
    - Intuitive and easy-to-navigate interface for both students and teachers.
-
 4. **Real-Time Data Processing**
    - Real-time processing and display of attendance data, with statistics.
-
 5. **Personal Profiles**
    - Personal profiles with detailed user information including barcodes for easy identification.
-
 6. **Error Handling and Optimization**
    - Robust error handling and optimization to ensure smooth functionality.
-
 7. **Conference Presentation**
    - Successfully presented the article "Developing mobile applications: Challenges and Solutions" at an international conference (IEEE).
    - Also published the article "Разработка и внедрение мобильного приложения для управления посещаемостью студентов" in the journal *Вестник Университета Шакарима. Серия технические науки*.
