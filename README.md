@@ -45,8 +45,3 @@ To run this project locally or deploy it to your server, follow these steps:
 
 2. **Install Dependencies:**
    - Ensure you have Visual Studio and .NET Core installed.
-
-## Contact
-
-- **Email:** dilnazbaidakhanova@gmail.com
-- **Telegram:** @dillnazzza
