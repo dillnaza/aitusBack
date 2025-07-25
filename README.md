@@ -27,11 +27,11 @@ The main goal is to develop and implement a mobile application to facilitate stu
 
 7. **Conference Presentation**
    - Successfully presented the article "Developing mobile applications: Challenges and Solutions" at an international conference (IEEE).
+   - Also published the article "Разработка и внедрение мобильного приложения для управления посещаемостью студентов" in the journal *Вестник Университета Шакарима. Серия технические науки*.
 
 ## Technologies Used
 
 - **Backend:** C#, .NET Core.
-- **Frontend:** HTML/CSS, JavaScript, React.
 - **Database:** SQLServer.
 
 ## Getting Started
@@ -40,7 +40,7 @@ To run this project locally or deploy it to your server, follow these steps:
 
 1. **Clone the Repository:**
    ```
-   git clone https://github.com/dillnaza/aitus
+   git clone https://github.com/dillnaza/aitusBack
    ```
 
 2. **Install Dependencies:**
